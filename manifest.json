@@ -1,14 +1,15 @@
 {
     "manifest_version": 2,
     "name": "Google link fixer",
-    "version": "2.4",
+    "short_name": "Link fixer",
+    "version": "2.4.1",
 
     "default_locale": "en",
     "description": "Prevents Google from changing the URL of the search result when you click on it",
     "icons": { "128": "icon_128.png" },
 
     "author": "littlelightlittlefire",
-    "homepage_url": "https://github.com/LittleLightLittleFire/chrome-link-fixer",
+    "homepage_url": "https://github.com/LittleLightLittleFire/link-fixer",
 
     "content_scripts": [
         {
