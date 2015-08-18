@@ -43,7 +43,7 @@ var actualCode = '(' + function() {
     }, true);
 
     window.addEventListener('mousedown', function() {
-        if (found && found.element.getAttribute('data-href') === found.href) {
+        if (found && ('getAttribute' in found.element) && found.element.getAttribute('data-href') === found.href) {
             found.element.href = found.href;
         }
     }, false);

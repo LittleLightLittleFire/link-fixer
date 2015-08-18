@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Google link fixer",
-    "version": "2.3",
+    "version": "2.4",
 
     "default_locale": "en",
     "description": "Prevents Google from changing the URL of the search result when you click on it",
