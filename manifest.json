@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Google link fixer",
     "short_name": "Link fixer",
-    "version": "2.4.1",
+    "version": "2.4.2",
 
     "default_locale": "en",
     "description": "Prevents Google from changing the URL of the search result when you click on it",
@@ -15,6 +15,7 @@
         {
             "js": ["content.js"],
             "matches": [
+                "*://*.google.com/*",
                 "*://*.google.ac/*",
                 "*://*.google.ad/*",
                 "*://*.google.ae/*",
