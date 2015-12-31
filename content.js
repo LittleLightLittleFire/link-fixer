@@ -1,26 +1,46 @@
+// A port of the Firefox extension
+// https://github.com/palant/searchlinkfix/blob/master/data/content.js
 var actualCode = '(' + function() {
     'use strict';
 
-    // Detect Google search page, same technique used here:
-    function googleProduct() {
-        var google = window.google;
-        return google ? google.sn : null;
-    }
-
     var found = null;
+    var restore = function() {
+        try {
+            if (found && ('getAttribute' in found.element) && found.element.getAttribute('href') !== found.href) {
+                found.element.href = found.href;
+            }
+        } catch(e) {
+            // ignored
+        }
+    };
 
     // Fix the links by adding a pair of mousedown handlers
     window.addEventListener('mousedown', function(e) {
-        var product = googleProduct();
-        if (!product) {
-            return;
-        }
-
         // Find the <a> tag
         var curr = null;
         for (curr = e.target;
-                curr && curr.localName && curr.localName.toLowerCase() !== 'a';
-                curr = curr.parentNode) {
+             curr && curr.localName && curr.localName.toLowerCase() !== 'a';
+             curr = curr.parentNode) {
+        }
+
+        // Verify it is in the search container, break out if the encrypted.google iframe if necessary
+        var checked = false;
+        if (curr) {
+            var par = curr.parentNode;
+            if (window.frameElement) {
+                par = window.frameElement.parentNode;
+            }
+
+            for (; par && par.parentNode; par = par.parentNode) {
+                if (('getAttribute' in par) && par.getAttribute('id') === 'search') {
+                    checked = true;
+                    break;
+                }
+            }
+        }
+
+        if (!checked) {
+            curr = null;
         }
 
         // Didn't find it
@@ -29,24 +49,17 @@ var actualCode = '(' + function() {
             return;
         }
 
-        // Stop the propagation if it is images, since Google images stops the propagation
-        if (product === 'images') {
-            e.stopPropagation();
-            return;
-        }
-
         // Save the link location
         found = {
             'href': curr.href,
             'element': curr
         };
+
+        // Restore even if event was cancelled
+        setTimeout(restore, 0);
     }, true);
 
-    window.addEventListener('mousedown', function() {
-        if (found && ('getAttribute' in found.element) && found.element.getAttribute('data-href') === found.href) {
-            found.element.href = found.href;
-        }
-    }, false);
+    window.addEventListener('mousedown', restore, false);
 
 } + ')();';
 
